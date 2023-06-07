@@ -1,11 +1,19 @@
+using FirstAPIAssignmentRepo.Data;
+using FirstAPIAssignmentRepo.Repository.Implementation;
+using FirstAPIAssignmentRepo.Repository.Interface;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddNewtonsoftJson();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddDbContext<EmployeeAPIDBContext>(options =>
+            options.UseNpgsql(builder.Configuration.GetConnectionString("WebApiDatabase")));
+builder.Services.AddScoped<IEmployeeRepository,EmployeeRepository>();
 
 var app = builder.Build();
 
